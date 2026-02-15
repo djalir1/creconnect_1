@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================= */
+/*          ROOT THEME           */
+/* ============================= */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+
+    --success: 158 64% 42%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(172 66% 45%),
+      hsl(172 80% 35%)
+    );
+
+    --shadow-card:
+      0 1px 3px hsl(220 20% 10% / 0.04),
+      0 1px 2px hsl(220 20% 10% / 0.06);
+
+    --shadow-card-hover:
+      0 10px 40px hsl(220 20% 10% / 0.1);
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 14.9%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+  }
+
+  /* Reset — but NOT destructive */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-figtree);
+    min-height: 100vh;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  button {
+    @apply transition-all duration-200 ease-in-out;
+  }
+}
+
+/* ============================= */
+/*         COMPONENTS            */
+/* ============================= */
+
+@layer components {
+  .container-custom {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-spacing {
+    @apply py-12 sm:py-16 lg:py-24;
+  }
+
+  .stat-card {
+    @apply bg-card rounded-xl p-5 sm:p-6 transition-all duration-300 ease-out;
+    box-shadow: var(--shadow-card);
+  }
+
+  .stat-card:hover {
+    box-shadow: var(--shadow-card-hover);
+    transform: translateY(-4px);
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .badge-pending {
+    @apply bg-warning/15 text-warning border border-warning/20 text-xs sm:text-sm px-2 py-1 rounded-full;
+  }
+
+  .badge-approved {
+    @apply bg-success/15 text-success border border-success/20 text-xs sm:text-sm px-2 py-1 rounded-full;
+  }
+
+  .badge-rejected {
+    @apply bg-destructive/15 text-destructive border border-destructive/20 text-xs sm:text-sm px-2 py-1 rounded-full;
+  }
+}
+
+/* ============================= */
+/*       RESPONSIVE HELPERS      */
+/* ============================= */
+
+@layer utilities {
+  .text-responsive-title {
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold;
+  }
+
+  .text-responsive-subtitle {
+    @apply text-sm sm:text-base md:text-lg text-muted-foreground;
+  }
+}
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+  }
+
+  .glass-dark {
+    @apply backdrop-blur-2xl bg-black/40 border border-white/10 rounded-2xl;
+  }
+
+  .glass-pill {
+    @apply backdrop-blur-md bg-white/10 border border-white/20 
+           rounded-full px-4 py-2 text-sm font-medium;
+  }
+
+  .glass-nav {
+    @apply backdrop-blur-xl bg-black/30 border-b border-white/10;
+  }
+}

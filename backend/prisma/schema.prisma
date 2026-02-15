@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(uuid())
+  email            String    @unique
+  password         String
+  name             String
+  role             Role      @default(CLIENT)
+  avatar           String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  bookings         Booking[]
+  receivedMessages Message[] @relation("ReceivedMessages")
+  sentMessages     Message[] @relation("SentMessages")
+  reviews          Review[]
+  studios          Studio[]
+}
+
+model Studio {
+  id             String         @id @default(uuid())
+  name           String
+  description    String         
+  location       String
+  pricePerHour   Float
+  images         String         // Changed Json to String for SQLite compatibility
+  features       String         // Changed Json to String for SQLite compatibility
+  rating         Float          @default(0)
+  availability   String         @default("available")
+  ownerId        String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  latitude       Float?
+  longitude      Float?
+  bookings       Booking[]
+  reviews        Review[]
+  owner          User           @relation(fields: [ownerId], references: [id])
+  approvalStatus ApprovalStatus @default(PENDING)
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Booking {
+  id            String        @id @default(uuid())
+  userId        String?
+  studioId      String?
+  startDate     DateTime
+  endDate       DateTime
+  totalPrice    Float
+  status        BookingStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  guestName     String?
+  message       String?       
+  paymentMethod String?
+  payerPhone    String?
+  
+  studio        Studio?       @relation(fields: [studioId], references: [id], onDelete: Cascade)
+  user          User?         @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  content    String   
+  senderId   String?
+  receiverId String
+  createdAt  DateTime @default(now())
+  guestName  String?
+  receiver   User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender     User?    @relation("SentMessages", fields: [senderId], references: [id])
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int
+  comment   String?  
+  userId    String
+  studioId  String?
+  createdAt DateTime @default(now())
+  
+  studio    Studio?  @relation(fields: [studioId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  CLIENT
+  STUDIO_OWNER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
